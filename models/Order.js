@@ -12,7 +12,7 @@ const orderSchema = new Schema({
         ref: 'User',
         required: true
     },
-    product_price: {
+    total_product_price: {
         type: Number,
         required: true
     },
@@ -50,6 +50,23 @@ const orderSchema = new Schema({
             5=cancle by user
             6=cancle by-admin
             7=refund
+        */
+    },
+    year_mount: {
+        type: String,
+        required: true
+    },
+    payment_method: {
+        type: String,
+        required: false,
+    },
+    payment_status: {
+        type: Number,
+        required: false,
+        default: 1,
+        enum: [1, 2]
+        /*  1=pending
+            2=success
         */
     }
 }, { timestamps: true });

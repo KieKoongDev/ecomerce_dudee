@@ -34,9 +34,11 @@ app.get(prefix, (req, res) => {
 });
 
 app.use(`${prefix}/users`, require("./routes/userRoute"));
+app.use(`${prefix}/user-address`, require("./routes/userAddressRoute"));
 app.use(`${prefix}/user-logs`, require("./routes/userLogRoute"));
 app.use(`${prefix}/auth`, require("./routes/authRoute"));
 app.use(`${prefix}/products`, require("./routes/productRoute"));
+app.use(`${prefix}/orders`, require("./routes/orderRoute"));
 
 // Connect to MongoDB
 require("./db");

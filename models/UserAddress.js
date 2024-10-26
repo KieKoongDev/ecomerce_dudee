@@ -18,6 +18,11 @@ const userAddressSchema = new Schema({
     phone: {
         type: String,
         required: true
+    },
+    receiver_name: {
+        type: String,
+        required: false,
+        default: ''
     }
 }, { timestamps: true });
 
