@@ -19,16 +19,24 @@ app.use(cors());
 const prefix = '/v1/api';
 
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', {
+        version: process.env.npm_package_version,
+    });
 });
 
 app.get(prefix, (req, res) => {
     res.json({
         message: 'server is running',
+        version: process.env.npm_package_version,
         status: 200,
         date: new Date()
     });
 });
+
+app.use(`${prefix}/users`, require("./routes/userRoute"));
+app.use(`${prefix}/user-logs`, require("./routes/userLogRoute"));
+app.use(`${prefix}/auth`, require("./routes/authRoute"));
+app.use(`${prefix}/products`, require("./routes/productRoute"));
 
 // Connect to MongoDB
 require("./db");

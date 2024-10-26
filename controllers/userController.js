@@ -5,15 +5,18 @@ const bcrypt = require('bcrypt');
 
 const generateUserCode = async (role) => {
     if (role === 'admin') {
-        const admins = await User.find({ role: 'admin' });
-        const adminAmount = admins.length
-        code = `ADMIN-${(adminAmount + 1).toString().padStart(4, '0')}`
+        const adminAmount = await User.countDocuments({ role: 'admin' });
+        code = `ADMIN-${(adminAmount + 1).toString().padStart(4, '0')}`;
     } else {
-        const users = await User.find()
-        const userAmount = users.length
-        code = `USER-${(userAmount + 1).toString().padStart(4, '0')}`
+        const userAmount = await User.countDocuments({ role: 'user' });
+        code = `USER-${(userAmount + 1).toString().padStart(4, '0')}`;
     }
     return code;
+}
+
+const getUserAddress = async (user_id) => {
+    const address = await UserAddress.find({ user_id: user_id }).select('-__v -createdAt -updatedAt -user_id');
+    return address;
 }
 
 exports.createUser = async (req, res) => {
@@ -21,7 +24,7 @@ exports.createUser = async (req, res) => {
         username,
         name,
         password,
-        role
+        role = 'user'
     } = req.body
     try {
         // validate request parameters
@@ -38,14 +41,14 @@ exports.createUser = async (req, res) => {
         // validate username
         if (username.length < 4 || username.length > 20) {
             return res.status(400).json({ message: 'username must be between 4 and 20 characters', status: 400 });
-        } else if (username.some(char => ['@','$','!','%','*','?','&', ' '].includes(char))) {
+        } else if (Array.from(username).some(char => ['@','$','!','%','*','?','&', ' '].includes(char))) {
             return res.status(400).json({ message: 'username must not contain special characters or space', status: 400 });
         }
 
         // validate name
         if (name.length < 4 || name.length > 20) {
             return res.status(400).json({ message: 'name must be between 4 and 20 characters', status: 400 });
-        } else if (name.some(char => ['@','$','!','%','*','?','&', ' '].includes(char))) {
+        } else if (Array.from(name).some(char => ['@','$','!','%','*','?','&', ' '].includes(char))) {
             return res.status(400).json({ message: 'name must not contain special characters or space', status: 400 });
         }
 
@@ -84,6 +87,13 @@ exports.createUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     const { name } = req.body
     try {
+        if (req.user.role !== 'user') {
+            return res.status(403).json({ message: 'Forbidden', status: 403 });
+        }
+        if (req.user.id !== req.params.id) {
+            return res.status(403).json({ message: 'Forbidden', status: 403 });
+        }
+
         // validate request parameter
         if (!name) {
             return res.status(400).json({ message: 'name is required', status: 400 });
@@ -113,7 +123,141 @@ exports.updateUser = async (req, res) => {
         });
         await userLog.save();
 
-        return res.status(201).json({ message: 'User created successfully', status: 201 });
+        return res.status(201).json({ message: 'User updated successfully', status: 201 });
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Internal server error', status: 500 });
+    }
+}
+
+exports.updateUserPassword = async (req, res) => {
+    const { old_password, new_password } = req.body
+    try {
+        if (req.user.role !== 'user') {
+            return res.status(403).json({ message: 'Forbidden', status: 403 });
+        }
+        if (req.user.id !== req.params.id) {
+            return res.status(403).json({ message: 'Forbidden', status: 403 });
+        }
+        
+        // validate request parameter
+        if (!old_password || !new_password) {
+            return res.status(400).json({ message: 'old_password and new_password are required', status: 400 });
+        }
+
+        const user = await User.findById(req.params.id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', status: 404 });
+        }
+
+        if (!await bcrypt.compare(old_password, user.password)) {
+            return res.status(400).json({ message: 'Wrong password', status: 400 });
+        }
+
+        // validate new password
+        if (new_password.length < 6 || new_password.length > 20) {
+            return res.status(400).json({ message: 'password must be between 6 and 20 characters', status: 400 });
+        }
+
+        const hashedPassword = await bcrypt.hash(new_password, 10);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        const userLog = new UserLog({
+            user_id: req.params.id,
+            action: `ChangePassword`,
+            detail: `Change ${user.role} password`
+        });
+        await userLog.save();
+
+        return res.status(201).json({ message: 'User updated user password successfully', status: 201 });
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Internal server error', status: 500 });
+    }
+}
+
+exports.getUsers = async (req, res) => {
+    const { name, role, page=1, limit=50 } = req.query
+    const options = {
+        page: parseInt(page),
+        limit: parseInt(limit)
+    }
+    try {
+        let query = {}
+        if (name) {
+            query.name = { $regex: name, $options: 'i' }
+        }
+        if (role) {
+            query.role = role
+        }
+
+        const users = await User
+        .find(query)
+        .skip((options.page - 1) * options.limit)
+        .limit(options.limit);
+        
+        return res.status(200).json({ message: 'Users retrieved successfully', status: 200, data: users });
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Internal server error', status: 500 });
+    }
+}
+
+exports.getUser = async (req, res) => {
+    const { id } = req.params
+    try {
+        if (!id) {
+            return res.status(400).json({ message: 'id is required', status: 400 });
+        }
+
+        const user = await User.findById(id).select('-password -__v');
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', status: 404 });
+        }
+
+        const userAddress = await getUserAddress(user._id);
+
+        const formattedUser = {
+            ...user._doc,
+            address: userAddress
+        }
+
+        return res.status(200).json({ message: 'User retrieved successfully', status: 200, data: formattedUser });
+    }
+    catch(err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Internal server error', status: 500 });
+    }
+}
+
+exports.deleteUser = async (req, res) => {
+    const { id } = req.params
+    try {
+        if (!id) {
+            return res.status(400).json({ message: 'id is required', status: 400 });
+        }
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found', status: 404 });
+        }
+        
+        await User.deleteOne({ _id: id });
+
+        const userLog = new UserLog({
+            user_id: id,
+            action: `DeleteUser`,
+            detail: `Delete ${user.role} account username ${user.username}`
+        });
+        await userLog.save();
+
+        return res.status(200).json({ message: 'User retrieved successfully', status: 200, data: formattedUser });
     }
     catch(err) {
         console.log(err);

@@ -29,10 +29,19 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    image: {
+    unit: {
         type: String,
         required: false,
-        default: ''
+        default: 'unit'
+    },
+    status: {
+        type: Number,
+        required: true,
+        default: 1
+        /*
+            1: active
+            0: inactive
+        */
     }
 }, { timestamps: true });
 
