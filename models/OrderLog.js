@@ -1,14 +1,19 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const userLogSchema = new Schema({
-    user_id: {
+const orderLogSchema = new Schema({
+    order_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Order',
         required: true
     },
-    user_code: {
+    order_code: {
         type: String,
+        required: true
+    },
+    by: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     action: {
@@ -22,4 +27,4 @@ const userLogSchema = new Schema({
     }
 }, { timestamps: true });
 
-module.exports = mongoose.model('UserLog', userLogSchema);
+module.exports = mongoose.model('OrderLog', orderLogSchema);

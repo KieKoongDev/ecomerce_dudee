@@ -39,6 +39,8 @@ app.use(`${prefix}/user-logs`, require("./routes/userLogRoute"));
 app.use(`${prefix}/auth`, require("./routes/authRoute"));
 app.use(`${prefix}/products`, require("./routes/productRoute"));
 app.use(`${prefix}/orders`, require("./routes/orderRoute"));
+app.use(`${prefix}/order-logs`, require("./routes/orderLogRoute"));
+app.use(`${prefix}/order-products`, require("./routes/orderProductRoute"));
 
 // Connect to MongoDB
 require("./db");

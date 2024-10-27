@@ -17,6 +17,7 @@ exports.login = async (req, res) => {
 
         const userLog = new UserLog({
             user_id: user._id,
+            user_code: user.code,
             action: `Login`,
             detail: `${user.role} is logged in username ${user.username}`
         });

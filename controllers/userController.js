@@ -118,6 +118,7 @@ exports.updateUser = async (req, res) => {
 
         const userLog = new UserLog({
             user_id: id,
+            user_code: user.code,
             action: `UpdateUser`,
             detail: `Change ${user.role} name from ${old_name} to ${name}`
         });
@@ -167,6 +168,7 @@ exports.updateUserPassword = async (req, res) => {
 
         const userLog = new UserLog({
             user_id: req.params.id,
+            user_code: user.code,
             action: `ChangePassword`,
             detail: `Change ${user.role} password`
         });
@@ -252,6 +254,7 @@ exports.deleteUser = async (req, res) => {
 
         const userLog = new UserLog({
             user_id: id,
+            user_code: user.code,
             action: `DeleteUser`,
             detail: `Delete ${user.role} account username ${user.username}`
         });
