@@ -1,0 +1,1087 @@
+{
+	"info": {
+		"_postman_id": "ce63f58a-99f0-4a87-8ca4-96a47e3c6582",
+		"name": "E-comerce-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33514604"
+	},
+	"item": [
+		{
+			"name": "user&admin",
+			"item": [
+				{
+					"name": "create (admin)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"description": "6 - 20 characters with eng or number",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "admin001",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register (user)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "testuser01",
+									"description": "4 - 20 characters with no space and special symbol",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"description": "6 - 20 characters with eng or number",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "user001",
+									"description": "1 - 30 characters display name in application",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "user",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "old_password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "123456789",
+									"description": "6 - 20 characters with eng or number",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/users/:id/change-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"users",
+								":id",
+								"change-password"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cc12cfe9a46085225cdf3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "testuser01",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456789",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "12345678",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getMe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/auth/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user address",
+			"item": [
+				{
+					"name": "create address",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user_id",
+									"value": "671cc12cfe9a46085225cdf3",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "etc",
+									"description": "home, work, etc",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "101/6 Nongkai 45600",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "0888888888",
+									"type": "text"
+								},
+								{
+									"key": "receiver_name",
+									"value": "PaPa",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/user-address",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-address"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update address",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "receiver_name",
+									"value": "John",
+									"type": "text"
+								},
+								{
+									"key": "address",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "phone",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/user-address/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cfb4800a0fa6bad540039",
+									"description": "address _id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all addresses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/user-address",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-address"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "cloths",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "shirt",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/user-address/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cfddee6ab6027395a4f43",
+									"description": "address_id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete address",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/user-address/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-address",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cfddee6ab6027395a4f43",
+									"description": "address_id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "product management",
+			"item": [
+				{
+					"name": "create product (admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "luxury ear pod",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "999",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "electronics",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "poppular ear-pod",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "100",
+									"type": "text"
+								},
+								{
+									"key": "unit",
+									"value": "pair",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update product (admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_admin}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "600",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "stock",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "unit",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cd3768b698df373314f87",
+									"description": "product _id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/products?status=1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "cloths",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "shirt",
+									"disabled": true
+								},
+								{
+									"key": "status",
+									"value": "1",
+									"description": "1 or 0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get product by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671cd3768b698df373314f87"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete product (admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token_admin}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "",
+									"description": "product _id"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "shopping cart system",
+			"item": [
+				{
+					"name": "place order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\" : \"671cc12cfe9a46085225cdf3\",\r\n    \"product_items\" : [\r\n        {\r\n            \"product_id\" : \"671cd3768b698df373314f87\",\r\n            \"quantity\" : 2,\r\n            \"ppu\": 600\r\n        },\r\n        {\r\n            \"product_id\" : \"671d168f2140620a61c32012\",\r\n            \"quantity\" : 1,\r\n            \"ppu\": 999\r\n        }\r\n    ],\r\n    \"delivery_method\" : \"flash\",\r\n    \"delivery_price\" : 45,\r\n    //\"payment_method\" : \"credit_card\",\r\n    \"user_address_id\" : \"671cfe1de6ab6027395a4f4b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/orders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\" : \"671cc12cfe9a46085225cdf3\",\r\n    \"product_items\" : [\r\n        {\r\n            \"product_id\" : \"671cd3768b698df373314f87\",\r\n            \"quantity\" : 2,\r\n            \"ppu\": 600\r\n        },\r\n        {\r\n            \"product_id\" : \"671d168f2140620a61c32012\",\r\n            \"quantity\" : 2,\r\n            \"ppu\": 999\r\n        }\r\n    ],\r\n    \"delivery_method\" : \"flash\",\r\n    \"delivery_price\" : 45,\r\n    \"payment_method\" : \"credit_card\",\r\n    \"user_address_id\" : \"671cfe1de6ab6027395a4f4b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/orders/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671e029cea5fe29777beea57"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update order status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\" : 2, // number\r\n    \"payment_method\" : \"credit_card\",\r\n    //\"tracking_number\" : \"\",\r\n    \"payment_status\" : 2 // 1 or 2\r\n}\r\n\r\n/* order status description\r\n    1=pending\r\n    2=processing\r\n    3=delivering\r\n    4=success\r\n    5=cancle by user\r\n    6=cancle by-admin\r\n    7=refund\r\n*/",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/v1/api/orders/:id/status",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders",
+								":id",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671e029cea5fe29777beea57",
+									"description": "order _id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/orders?user_id=671cc12cfe9a46085225cdf3&year_mount=202410",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "1",
+									"description": "filter order by status : enum 1, 2, 3, 4, 5, 6, 7",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": "671cc12cfe9a46085225cdf3"
+								},
+								{
+									"key": "year_mount",
+									"value": "202410"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Order by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/orders/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671e029cea5fe29777beea57",
+									"description": "order _id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Order Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/order-products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"order-products"
+							],
+							"query": [
+								{
+									"key": "order_id",
+									"value": "671e029cea5fe29777beea57",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/orders/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"orders",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "671e0bbf9a832a5fe47dfa70",
+									"description": "order _id (order status = 1 only)"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user logs",
+			"item": [
+				{
+					"name": "get user logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/user-logs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"user-logs"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "671cc12cfe9a46085225cdf3",
+									"disabled": true
+								},
+								{
+									"key": "action",
+									"value": "Login",
+									"disabled": true
+								},
+								{
+									"key": "role",
+									"value": "user",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order logs",
+			"item": [
+				{
+					"name": "get order logs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/v1/api/order-logs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"v1",
+								"api",
+								"order-logs"
+							],
+							"query": [
+								{
+									"key": "order_id",
+									"value": "671e029cea5fe29777beea57",
+									"disabled": true
+								},
+								{
+									"key": "user_id",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "action",
+									"value": "Create",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:5000",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWNjMTJjZmU5YTQ2MDg1MjI1Y2RmMyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzMwMDIyMTA0LCJleHAiOjE3MzAxMDg1MDR9.NZ8-y1J8t85fPUMB_IGgTc0pqFvVDoZv9UDxWdq2YoQ",
+			"type": "default"
+		},
+		{
+			"key": "token_admin",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWNjMThkZmU5YTQ2MDg1MjI1Y2RmYiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTcyOTk1MzQ2MywiZXhwIjoxNzMwMDM5ODYzfQ.QEwiJ3zMfT-BBkN9gDPCiVT_UeMY7fYFzJD6ZjHUNrE",
+			"type": "default"
+		}
+	]
+}
